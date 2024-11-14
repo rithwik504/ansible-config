@@ -1,11 +1,11 @@
 ### Ansible configuration (password less)
 * Lets create two vms.
 * create a user in ansible control node called as devops and same on node.
----bash
+```bash
 
 sudo adduser devops
 
----
+```
 
 * give admin permissions password less for devops
 * generate a key pair on ansible control node
@@ -13,88 +13,89 @@ sudo adduser devops
 * now try connecting using ssh without password
 * INstall ansible on control node 
 
----bash
+```bash
 sudo apt update
 sudo apt install software-properties-common
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible -y
 
----
+```
 
 * On both node add user devops
 
----bash
+```bash
 
 sudo adduser devops
 
----
+```
 
 * AWS will not allow password authentication by default, so we need to change the configuration rules
 * Change the value of PasswordAuthentication to yes in /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
 * restart sshd service
----bash
-sudo systemctl restart ssh.service ---
+```bash
+sudo systemctl restart ssh.service
+```
 * We need to grant admin permissions to devops user
----bash 
+```bash 
 
 sudo visudo
 
----
+```
 
 * Now add the following line under the line %sudo (ALL=ALL)
 
----bash
+```bash
 
 devops  ALL=(ALL:ALL) NOPASSWD:ALL
 
----
+```
 
 * Now lets configure key based authentication between ansible control node and node 1
 
 * Switch to devops user
 
----bash
+```bash
 
  su devops
  
- ---
+ ```
 
 * Create a key pair ssh-keygen on ansible control node
 
----bash 
+```bash 
 
 ssh-keygen
 
----
+```
 
 * Now copy the public key into node1 on ansible control node
 
----bash
+```bash
 
 ssh-copy-id devops@<node-1-ip>
 
----
+```
 
 * After this step we are up for passwordless authentication
 
 * Lets install ansible on ansible control node
 
----bash
+```bash
   
 sudo apt update
 sudo apt install software-properties-common
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible -y
 
----
+```
 
 * Now create a hosts file and perform ansible ping test
 
----bash
+```bash
 
 vi <anyname> anyname=creates a vi file {example ---bash vi hosts ---}
 
----
+```
 
 * now give node-1 public ip or private ip in the vi file 
 
